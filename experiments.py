@@ -3,36 +3,43 @@ class bicycle(object):
         self.model=model
         self.production_cost=production_cost
         self.weight=weight
-        self.bicycles=bicycles
-    def new_model(self):
-        bicycles.append(self.model) 
+
+bicycles=[bicycle("schwinn", 100, 20), bicycle("speedster", 120, 15)]
 
 class bike_shop(object):
-    def __init__(self, store_name, inventory, markup, profit):
+    def __init__(self, store_name, markup):
         self.store_name=store_name
-        self.inventory=inventory
         self.markup=markup
-        self.profit=profit
-    def purchase_inventory (self, bike_model, quantity, wholesale_price):
-        self.inventory[model]={quantity:wholesale_price}
-        return self.inventory
-    def sell_bike (self, model, production_cost):
-        self.inventory[model]-=1
-        self.profit+=production_cost*self.markup
+    def purchase_inventory(self):
+        self.inventory={}
+        self.inventory_prices={}
+        for bike in bicycles:
+            bike_price=bike.production_cost * self.markup
+            self.inventory[bike]=50
+            self.inventory_prices[bike]=bike_price
+    def available_bikes (self):
+        for shopper in shoppers:
+            print("Here are the bikes that {} can afford" .format(shopper.customer_name))
+            for key in self.inventory:
+                if self.inventory_prices[key] <= shopper.budget:
+                    print (key)
+                else:
+                    pass
 
 class customers(object):
     def __init__(self, customer_name, budget, bikes_owned):
-        customers.customer_name=customer_name
-        customers.budget=budget
-        customers.bikes_owned=bikes_owned
-    def enter_store(self):
-        shoppers.append(self.customer_name)
-    def buy_bike(self, model, retail_price):
-        customers.bikes_owned.append(model)
-        customers.budget-=int(retail_price)
+        self.customer_name=customer_name
+        self.budget=budget
+        self.bikes_owned=bikes_owned
+  
+toms_store=bike_shop("toms_store", 1.25)
+
+shoppers=[customers("Sally", 200, []), customers("Jim", 500, []), customers("Jane", 1000, [])]
 
 
-for bike in bicycles:
-    print(bike.model)
+toms_store.purchase_inventory()
 
-    
+print(toms_store.inventory)
+print(toms_store.inventory_prices)
+
+toms_store.available_bikes()
