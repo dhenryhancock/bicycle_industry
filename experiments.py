@@ -1,3 +1,5 @@
+import random
+
 class bicycle(object):
     def __init__(self, model, production_cost, weight):
         self.model=model
@@ -12,9 +14,10 @@ bicycles=[bicycle("schwinn", 100, 20),
         bicycle("kona", 300, 22),]
 
 class bike_shop(object):
-    def __init__(self, store_name, markup):
+    def __init__(self, store_name, markup, profit):
         self.store_name=store_name
         self.markup=markup
+        self.profit=profit
     def purchase_inventory(self):
         self.inventory={}
         self.inventory_prices={}
@@ -26,16 +29,19 @@ class bike_shop(object):
     def available_bikes (self):
         for shopper in shoppers:
             print("Here are the bikes that {} can afford" .format(shopper.customer_name))
-            for key in self.inventory:
-                if self.inventory_prices[key] <= shopper.budget:
-                    print (key)
+            for bike in bicycles:
+                if bike.production_cost*self.markup <= shopper.budget:
+                    print (bike.model)
+                    affordable_bikes=[]
+                    affordable_bikes.append(bike.model)
+                    customer_selections[shopper]=random.choice(affordable_bikes)
                 else:
                     pass
     def sell_bike (self):
         for people in customer_selections:
-            selection=customer_selections(people)
+            selection=customer_selections[people]
             self.inventory[selection]-=1
-            self.profit+=self.inventory_prices[selection]
+            self.profit+=self.inventory_prices[selection]*self.markup
 
 class customers(object):
     def __init__(self, customer_name, budget, bikes_owned):
@@ -43,15 +49,16 @@ class customers(object):
         self.budget=budget
         self.bikes_owned=bikes_owned
   
-toms_store=bike_shop("toms_store", 1.25)
+toms_store=bike_shop("toms_store", 1.25, 0)
 
 shoppers=[customers("Sally", 200, []), customers("Jim", 500, []), customers("Jane", 1000, [])]
 
-customer_selections={
+customer_selections={}
 
 toms_store.purchase_inventory()
 
-print(toms_store.inventory)
-print(toms_store.inventory_prices)
-
 toms_store.available_bikes()
+
+toms_store.sell_bike()
+
+print(toms_store.inventory)
